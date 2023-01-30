@@ -9,7 +9,6 @@ export const StyledForm=styled(Grid)`
     flex-flow: "row wrap";
 
     .form{
-        min-height: 350px;
-        padding: 16px;
+        min-height: 300px;
     }
 `

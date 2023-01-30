@@ -1,71 +1,113 @@
-import { Box, Grid, Paper, TextField } from "@mui/material"
+import { Box, Button, Grid, Paper, Step, StepLabel, Stepper, TextField } from "@mui/material"
 import { StyledForm } from "./Wrappers/StyledForm"
-import RenderHeader, { RenderInputText, RenderSelect } from './commons/RenderHeader'
+import RenderHeader, { RenderInputText, RenderSelect } from './commons/RenderInputField'
 import { useState } from "react"
+import Step1 from "./steps/Step1"
+import Step2 from "./steps/Step2"
+import Step3 from "./steps/Step3"
+import FinalOutput from "./steps/FinalOutput"
 
 const FormComponent = () => {
     let [state, setState] = useState({
         data: {
             firstName: "",
-            lastName:"",
-            gender:"",
-            phone:"",
-            email:"",
+            lastName: "",
+            gender: "",
+            phone: "",
+            email: "",
 
-            highestDegree:"",
-            issuedBy:"",
-            yearOfPassing:"",
-            jobType:"",
+            highestDegree: "",
+            issuedBy: "",
+            yearOfPassing: "",
+            jobType: "",
 
-            skill:"",
-            jobApplyFor:"",
-            workExperience:"",
-            expectedSalary:"",
+            skill: "",
+            jobApplyFor: "",
+            workExperience: "",
+            expectedSalary: "",
         },
         errors: {
             firstName: ""
         },
+        currentStep: 0,
     })
-    const handleOnChange = (e) => {
+
+    const handleInputChange = (e) => {
         const { data, errors } = state;
-
-        e.target.value.length < 3 ? errors[e.target.name] = `${e.target.name} must be atleast 3 letter` : errors[e.target.name] = ''
-
+        e.target.value.length < 4 ? errors[e.target.name] = `${e.target.name} must be atleast 3 letter` : errors[e.target.name] = ''
         data[e.target.name] = e.target.value;
-
-        setState({ data, errors })
+        setState({ ...state, data, errors })
     }
+    
+    const handleSelectChange = (e) => {
+        const {data,errors}=state;
+        data[e.target.name] = e.target.value;
+        setState({ ...state, data, errors })
+    }
+    
+    const handleEmailChange=(e)=>{
+        const {data,errors}=state;
+        data[e.target.name] = e.target.value;
+        const regex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+        if(regex.test(e.target.value)){
+            errors[e.target.name] = null;
+        }
+        else{
+            errors[e.target.name] = 'Please provide a valid email address'
+        }
+        setState({ ...state, data, errors })
+    }
+    
+    const handleContactChange=(e)=>{
+        const {data,errors}=state;
+        data[e.target.name] = e.target.value;
+        const regex=/^((\+91)|0)?[6789]\d{9}$/
+        if(regex.test(e.target.value)){
+            errors[e.target.name] = null;
+        }
+        else{
+            errors[e.target.name] = 'Please enter a valid number';
+        }
+        setState({ ...state, data, errors })
+    }
+    
+    
+    const handleNext = () => {
+        console.log('next clicked');
+        setState({ ...state, currentStep:state.currentStep + 1 })
+    }
+    const handlePrev = () => {
+        console.log('prev clicked');
+        setState({ ...state, currentStep:state.currentStep - 1 })
+    }
+    
+    const steps = [
+        'Personal Bio',
+        'Educational',
+        'Professional'
+    ]
     return (
         <StyledForm container>
             <Grid item xs={12} sm={7}>
-                <Box p={2} mb={2} component={Paper}>
-                    <RenderHeader label="Stepper component goes here" />
+                <Paper p={2} mb={2} component={Box}>
+                <Box mb={2} pt={1}>
+                    <RenderHeader label="MultiStep Signup Form" />
                 </Box>
-                <Box component={Paper}>
-                    <form className='form'>
-                        <Box mb={2}>
-                            <RenderHeader label="Form component goes here" />
-                        </Box>
-                        <Box>
-                            <Grid container spacing={2}>
-                                <Grid item xs={12} sm={6}>
-                                    {RenderInputText({ label: "First Name", name: 'firstName', handleOnChange, state })}
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    {RenderInputText({ label: "Last Name", name: 'lastName', handleOnChange, state })}
-                                </Grid>
-                                {/* <Grid item xs={12}>
-                                    {RenderSelect({ label: "First Name", type:'date', name: 'firstName', handleOnChange, state })}
-                                </Grid> */}
-                                <Grid item sm={6}>
-                                    {RenderInputText({ label: "Phone number", type:'number', name: 'phone', handleOnChange, state })}
-                                </Grid>
-                                <Grid item sm={6}>
-                                    {RenderInputText({ label: "Email", name: 'email', handleOnChange, state })}
-                                </Grid>
-                            </Grid>
-                        </Box>
+                <Stepper activeStep={state.currentStep} alternativeLabel>
+                        {steps.map((label) => (
+                            <Step key={label}>
+                                <StepLabel>{label}</StepLabel>
+                            </Step>
+                        ))}
+                    </Stepper>
+                </Paper>
+                <Box>
+                {state.currentStep!==3?<form className='form'>
+                    {state.currentStep===0?<Step1 state={state} handleInputChange={handleInputChange} handleNext={handleNext} handleEmailChange={handleEmailChange} handleSelectChange={handleSelectChange} handleContactChange={handleContactChange}/>:null}
+                    {state.currentStep===1?    <Step2 state={state} handleInputChange={handleInputChange} handleSelectChange={handleSelectChange} handleNext={handleNext} handlePrev={handlePrev}/>:null}
+                    {state.currentStep===2?    <Step3 state={state} handleInputChange={handleInputChange} handleSelectChange={handleSelectChange} handleNext={handleNext} handlePrev={handlePrev}/>:null}
                     </form>
+                    :<FinalOutput/>}
                 </Box>
             </Grid>
         </StyledForm>
