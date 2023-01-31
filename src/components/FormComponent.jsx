@@ -9,8 +9,7 @@ import { useFormContext } from "./Context/AppContext"
 
 
 const FormComponent = () => {
-    const {state}=useFormContext()
-    
+    const {state,dispatch}=useFormContext()
     const steps = [
         'Personal Bio',
         'Educational',

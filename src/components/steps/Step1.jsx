@@ -1,7 +1,7 @@
 import { Button, Grid, Paper,Box } from '@mui/material'
 import RenderHeader, { RenderInputText, RenderSelect } from '../commons/RenderInputField'
 import { useFormContext } from '../Context/AppContext'
-import { handleInputChange,handleEmailChange,handleSelectChange,handleContactChange, handleNext,handlePrev } from "../Context/Actions"
+import { handleInputChange,handleEmailChange,handleSelectChange,handleContactChange, handleNext,handleStep1validation } from "../Context/Actions"
 
 const Step1 = () => {
     const {state,dispatch}=useFormContext();
@@ -33,7 +33,7 @@ const Step1 = () => {
             </Grid>
             <Grid container spacing={1} justifyContent='flex-end' >
                 <Grid item >
-                    <Button variant="outlined" onClick={()=>dispatch({type:handleNext})}>Next</Button>
+                    <Button variant="outlined" type='button' onClick={()=>dispatch({type:handleStep1validation})}>Next</Button>
                 </Grid>
             </Grid>
         </Paper>

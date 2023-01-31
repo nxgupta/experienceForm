@@ -1,11 +1,11 @@
 import { Button, Grid, Paper } from '@mui/material'
 import { Box } from '@mui/system'
 import RenderHeader, { RenderInputText, RenderSelect } from '../commons/RenderInputField'
-import {handleNext,handlePrev,handleSelectChange,handleInputChange} from '../Context/Actions'
+import {handleNext,handlePrev,handleSelectChange,handleInputChange,handleStep2validation} from '../Context/Actions'
 import { useFormContext } from '../Context/AppContext'
 
 const Step2 = () => {
-    const {dispatch}=useFormContext();
+    const {state,dispatch}=useFormContext();
     return (
         <Paper component={Box} p={2}>
             <Box mb={2}>
@@ -23,7 +23,7 @@ const Step2 = () => {
             </Grid>
             <Grid container spacing={1} marginBottom='16px'>
                 <Grid item xs={12} sm={6}>
-                    {RenderInputText({ label: "Passing Year", type: 'number', name: 'yearOfPassing',InputChange:handleInputChange})}
+                    {RenderInputText({ label: "Passing Year", name: 'yearOfPassing',InputChange:handleInputChange})}
                 </Grid>
             </Grid>
             <Grid container spacing={1} justifyContent='space-between' >
@@ -31,7 +31,7 @@ const Step2 = () => {
                     <Button variant="outlined" onClick={()=>dispatch({type:handlePrev})}>Prev</Button>
                 </Grid>
                 <Grid item >
-                    <Button variant="outlined" onClick={()=>dispatch({type:handleNext})}>Next</Button>
+                    <Button variant="outlined" onClick={()=>dispatch({type:handleStep2validation})}>Next</Button>
                 </Grid>
             </Grid>
         </Paper>
