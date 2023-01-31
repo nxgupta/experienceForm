@@ -1,12 +1,11 @@
 import { Button, Grid, Paper,Box } from '@mui/material'
 import RenderHeader, { RenderInputText, RenderSelect } from '../commons/RenderInputField'
-import {handleNext,handlePrev,handleSelectChange,handleInputChange} from '../Context/Actions'
+import {handleSubmit,handlePrev,handleSelectChange,handleStep3validation,handleInputChange} from '../Context/Actions'
 import { useFormContext } from '../Context/AppContext'
 
 const Step3 = () => {
 
     const {dispatch,state}=useFormContext();
-
     return (
         <Paper component={Box} p={2}>
             <Box mb={2}>
@@ -36,7 +35,7 @@ const Step3 = () => {
             <Grid container spacing={1} marginBottom='16px' >
                 <Grid item xs={12} sm={6}>
                     {RenderSelect({
-                        label: "Choose Work Type", name: 'jobType', options: [
+                        label: "Choose Work Type", name: 'jobApplyFor', options: [
                             { key: "Marketting", value: "Marketting" },
                             { key: "Official Work", value: "Official Work" },
                             { key: "Work from home", value: "Work from home" },
@@ -52,7 +51,7 @@ const Step3 = () => {
                     <Button variant="outlined" onClick={()=>dispatch({type:handlePrev})}>Prev</Button>
                 </Grid>
                 <Grid item >
-                    <Button variant="outlined" onClick={()=>{dispatch({type:handleNext}),console.log(state)}}>Finish</Button>
+                    <Button variant="outlined" onClick={()=>dispatch({type:handleStep3validation})}>Finish</Button>
                 </Grid>
             </Grid>
         </Paper>

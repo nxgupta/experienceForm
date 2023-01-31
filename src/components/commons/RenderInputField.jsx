@@ -38,8 +38,8 @@ export const RenderSelect=({
       size='small'
       fullWidth={true}
       variant='outlined'
-      error={errors[name] ? true: false}
-      helperText={errors[name]}
+      error={!data[name] && errors[name]? true:false}
+      helperText={data[name] ? "" : errors[name]}
         >
           {options.map((option) => (
             <MenuItem key={option.key} value={option.value}>
