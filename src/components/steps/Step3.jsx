@@ -1,16 +1,11 @@
-import { Button, Grid, Paper } from '@mui/material'
-import { Box } from '@mui/system'
-import React from 'react'
+import { Button, Grid, Paper,Box } from '@mui/material'
 import RenderHeader, { RenderInputText, RenderSelect } from '../commons/RenderInputField'
+import {handleNext,handlePrev,handleSelectChange,handleInputChange} from '../Context/Actions'
+import { useFormContext } from '../Context/AppContext'
 
+const Step3 = () => {
 
-
-const Step3 = ({ state, handleInputChange,handleSelectChange, handleNext, handlePrev }) => {
-
-    const handleFinish=()=>{
-        handleNext()
-        console.log(state)
-    }
+    const {dispatch,state}=useFormContext();
 
     return (
         <Paper component={Box} p={2}>
@@ -25,7 +20,7 @@ const Step3 = ({ state, handleInputChange,handleSelectChange, handleNext, handle
                             { key: "Communication", value: "Communication" },
                             { key: "Designing", value: "Designing" },
                             { key: "not Yet Defined", value: "not Yet Defined" },
-                        ], handleInputChange:handleSelectChange, state
+                        ], InputChange:handleSelectChange
                     })}
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -34,7 +29,7 @@ const Step3 = ({ state, handleInputChange,handleSelectChange, handleNext, handle
                             { key: "Less than 1 year", value: "Less than 1 year" },
                             { key: "More than 1 year", value: "More than 1 year" },
                             { key: "1 year", value: "1 year" },
-                        ], handleInputChange:handleSelectChange, state
+                        ], InputChange:handleSelectChange
                     })}
                 </Grid>
             </Grid>
@@ -45,19 +40,19 @@ const Step3 = ({ state, handleInputChange,handleSelectChange, handleNext, handle
                             { key: "Marketting", value: "Marketting" },
                             { key: "Official Work", value: "Official Work" },
                             { key: "Work from home", value: "Work from home" },
-                        ], handleInputChange:handleSelectChange, state
+                        ], InputChange:handleSelectChange
                     })}
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                    {RenderInputText({ label: "Expected Salary", name: 'expectedSalary', handleInputChange, state })}
+                    {RenderInputText({ label: "Expected Salary", name: 'expectedSalary', InputChange:handleInputChange})}
                 </Grid>
             </Grid>
             <Grid container spacing={1} justifyContent='space-between' >
-                <Grid item >
-                    <Button variant="outlined" onClick={handlePrev}>Prev</Button>
+            <Grid item >
+                    <Button variant="outlined" onClick={()=>dispatch({type:handlePrev})}>Prev</Button>
                 </Grid>
                 <Grid item >
-                    <Button variant="outlined" onClick={handleFinish}>Finish</Button>
+                    <Button variant="outlined" onClick={()=>{dispatch({type:handleNext}),console.log(state)}}>Finish</Button>
                 </Grid>
             </Grid>
         </Paper>

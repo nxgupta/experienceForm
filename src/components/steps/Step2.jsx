@@ -1,9 +1,11 @@
 import { Button, Grid, Paper } from '@mui/material'
 import { Box } from '@mui/system'
-import React from 'react'
 import RenderHeader, { RenderInputText, RenderSelect } from '../commons/RenderInputField'
+import {handleNext,handlePrev,handleSelectChange,handleInputChange} from '../Context/Actions'
+import { useFormContext } from '../Context/AppContext'
 
-const Step2 = ({ state, handleInputChange, handleSelectChange, handleNext, handlePrev }) => {
+const Step2 = () => {
+    const {dispatch}=useFormContext();
     return (
         <Paper component={Box} p={2}>
             <Box mb={2}>
@@ -13,30 +15,23 @@ const Step2 = ({ state, handleInputChange, handleSelectChange, handleNext, handl
                 <Grid item xs={12} sm={6}>
                     {RenderSelect({
                         label: 'Highest Qualification', name: 'highestDegree',
-                        options: [{ key: 'P.hd', value: 'phd' },{ key: 'M.Tech', value: 'mtech' }, { key: 'B.Tech', value: 'btech' }], handleInputChange:handleSelectChange, state
-                    })}
+                        options: [{ key: 'P.hd', value: 'phd' },{ key: 'M.Tech', value: 'mtech' }, { key: 'B.Tech', value: 'btech' }],InputChange:handleSelectChange})}
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                    {RenderInputText({ label: "Issued By", name: 'issuedBy', handleInputChange, state })}
+                    {RenderInputText({ label: "Issued By", name: 'issuedBy',InputChange:handleInputChange  })}
                 </Grid>
             </Grid>
             <Grid container spacing={1} marginBottom='16px'>
                 <Grid item xs={12} sm={6}>
-                    {RenderInputText({ label: "Passing Year", type: 'number', name: 'yearOfPassing', handleInputChange, state })}
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                {RenderSelect({
-                        label: 'Job Apply For', name: 'jobType',
-                        options: [{ key: 'Software Engineer', value: 'softwareengineer' },{ key: 'Technical Support', value: 'technicalsupport' }, { key: 'Customer Success Manager', value: 'customersuccessmanager' }], handleInputChange:handleSelectChange, state
-                    })}
+                    {RenderInputText({ label: "Passing Year", type: 'number', name: 'yearOfPassing',InputChange:handleInputChange})}
                 </Grid>
             </Grid>
             <Grid container spacing={1} justifyContent='space-between' >
                 <Grid item >
-                    <Button variant="outlined" onClick={handlePrev}>Prev</Button>
+                    <Button variant="outlined" onClick={()=>dispatch({type:handlePrev})}>Prev</Button>
                 </Grid>
                 <Grid item >
-                    <Button variant="outlined" onClick={handleNext}>Next</Button>
+                    <Button variant="outlined" onClick={()=>dispatch({type:handleNext})}>Next</Button>
                 </Grid>
             </Grid>
         </Paper>
