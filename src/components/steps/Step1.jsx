@@ -1,9 +1,10 @@
-import { Button, Grid, Paper } from '@mui/material'
-import { Box } from '@mui/system'
-import React from 'react'
+import { Button, Grid, Paper,Box } from '@mui/material'
 import RenderHeader, { RenderInputText, RenderSelect } from '../commons/RenderInputField'
+import { useFormContext } from '../Context/AppContext'
+import { handleInputChange,handleEmailChange,handleSelectChange,handleContactChange, handleNext,handlePrev } from "../Context/Actions"
 
-const Step1 = ({ state, handleInputChange, handleNext, handleSelectChange, handleEmailChange,handleContactChange }) => {
+const Step1 = () => {
+    const {state,dispatch}=useFormContext();
     return (
         <Paper component={Box} p={2}>
             <Box mb={2}>
@@ -11,28 +12,28 @@ const Step1 = ({ state, handleInputChange, handleNext, handleSelectChange, handl
             </Box>
             <Grid container spacing={1} marginBottom='16px' >
                 <Grid item xs={12} sm={6}>
-                    {RenderInputText({ label: "First Name", name: 'firstName', handleInputChange:handleInputChange, state })}
+                    {RenderInputText({ label: "First Name", name: 'firstName', InputChange:handleInputChange})}
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                    {RenderInputText({ label: "Last Name", name: 'lastName', handleInputChange:handleInputChange, state })}
+                    {RenderInputText({ label: "Last Name", name: 'lastName', InputChange:handleInputChange})}
                 </Grid>
             </Grid>
             <Grid container spacing={1} marginBottom='16px'>
                 <Grid item xs={12}>
-                    {RenderSelect({ label: "Gender", name: 'gender', options: [{ key: 'Male', value: 'Male' }, { key: 'Female', value: 'Female' }, { key: 'Other', value: 'Other' }], handleInputChange:handleSelectChange, state })}
+                    {RenderSelect({ label: "Gender", name: 'gender', options: [{ key: 'Male', value: 'Male' }, { key: 'Female', value: 'Female' }, { key: 'Other', value: 'Other' }], InputChange:handleSelectChange})}
                 </Grid>
             </Grid>
             <Grid container spacing={1} marginBottom='16px'>
                 <Grid item xs={12} sm={6}>
-                    {RenderInputText({ label: "Phone number", type: 'number', name: 'phone', handleInputChange:handleContactChange, state })}
+                    {RenderInputText({ label: "Phone number", type: 'number', name: 'phone', InputChange:handleContactChange})}
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                    {RenderInputText({ label: "Email", name: 'email', handleInputChange:handleEmailChange, state })}
+                    {RenderInputText({ label: "Email", name: 'email', InputChange:handleEmailChange})}
                 </Grid>
             </Grid>
             <Grid container spacing={1} justifyContent='flex-end' >
                 <Grid item >
-                    <Button variant="outlined" onClick={()=>handleNext()}>Next</Button>
+                    <Button variant="outlined" onClick={()=>dispatch({type:handleNext})}>Next</Button>
                 </Grid>
             </Grid>
         </Paper>

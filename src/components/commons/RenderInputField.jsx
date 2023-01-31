@@ -1,5 +1,5 @@
 import { MenuItem, TextField, Typography } from "@mui/material"
-
+import { useFormContext } from "../Context/AppContext"
 const RenderHeader = ({align,color,variant,label}) => {
   return (
     <Typography
@@ -15,19 +15,25 @@ const RenderHeader = ({align,color,variant,label}) => {
 export const RenderSelect=({
   label,
   name,
-  state,
   options,
-  handleInputChange
+  InputChange
 })=>{
 
+  const {state,dispatch}=useFormContext();
   const {data,errors}=state;
+
   return(
     <TextField
       select
       label={label}
       name={name}
       color='primary'
-      onChange={handleInputChange}
+      onChange={(e)=>dispatch({
+        type:InputChange,
+        payload:{
+          name,value:e.target.value
+        }
+      })}
       value={data[name]}
       size='small'
       fullWidth={true}
@@ -40,20 +46,24 @@ export const RenderSelect=({
               {option.key}
             </MenuItem>
           ))}
-          
         </TextField>
   )
 }
-export const RenderInputText=({label,name,state,handleInputChange,type})=>{
+export const RenderInputText=({label,name,type,InputChange})=>{
 
+  const {state,dispatch}=useFormContext();
   const {data,errors}=state;
-
   return (<TextField 
   label={label}
   type={type ? type : "text"}
   name={name}
   color='primary'
-  onChange={handleInputChange}
+  onChange={(e)=>dispatch({
+    type:InputChange,
+    payload:{
+      name,value:e.target.value
+    }
+  })}
   value={data[name]}
   size='small'
   fullWidth={true}
