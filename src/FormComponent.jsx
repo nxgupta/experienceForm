@@ -1,12 +1,7 @@
 import { Box, Grid, Paper, Step, StepLabel, Stepper } from "@mui/material"
-import RenderHeader from './components/commons/RenderInputField'
-import Step1 from "./components/steps/Step1"
-import Step2 from "./components/steps/Step2"
-import Step3 from "./components/steps/Step3"
-import FinalOutput from "./components/steps/FinalOutput"
-import { useFormik } from 'formik'
+import RenderHeader from './components/commons/RenderHeader'
+import {Step1, Step2,Step3,FinalOutput} from "./components/steps/"
 import styled from 'styled-components'
-import { formValidation } from "./components/validations/validators"
 import { useState } from "react"
 
 export const StyledForm = styled(Grid)`
@@ -22,46 +17,52 @@ export const StyledForm = styled(Grid)`
 `
 
 const FormComponent = () => {
-
     const [currentStep, setCurrentStep] = useState(0);
-
-    const { errors, touched, handleChange,handleSubmit,handleBlur,values,isSubmitting,setSubmitting, } = useFormik({
-        initialValues: {
-            firstName: "",
-            lastName: "",
-            email: "",
-            phone: "",
-            gender: "",
-
-            highestDegree: "",
-            issuedBy: "",
-            yearOfPassing: "",
-
-            skill: "",
-            jobApplyFor: "",
-            workExperience: "",
-            expectedSalary: ""
-        },
-        validationSchema: formValidation[currentStep],
-        onSubmit: (values, action) => {
-            if (Object.keys(errors).length === 0) {
-                setCurrentStep(currentStep + 1);
-            }
-            else{
-                setSubmitting(false)
-            }
-            if(currentStep===2){
-                console.log(values)
-            }
-        }
-    })
-
-    const tools={ errors, touched, handleChange,handleSubmit,handleBlur,values }
     const steps = [
         'Personal Bio',
         'Educational',
         'Professional'
     ]
+
+    const [state, setState] = useState(
+    //     {
+    //     firstName: "",
+    //     lastName: "",
+    //     email: "",
+    //     phone: "",
+    //     gender: "",
+    //     highestDegree: "",
+    //     issuedBy: "",
+    //     yearOfPassing: "",
+    //     skill: "",
+    //     jobApplyFor: "",
+    //     workExperience: "",
+    //     expectedSalary: ""
+    // }
+    [{
+        firstName: "",
+        lastName: "",
+        email: "",
+        phone: "",
+        gender: ""
+    }, {
+        highestDegree: "",
+        issuedBy: "",
+        yearOfPassing: "",
+    }, {
+        skill: "",
+        jobApplyFor: "",
+        workExperience: "",
+        expectedSalary: ""
+    }])
+
+    const next=()=>{
+        setCurrentStep(currentStep+1)
+    }
+    const prev=()=>{
+        setCurrentStep(currentStep-1)
+    }
+
     return (
         <StyledForm container>
             <Grid item xs={12} sm={7}>
@@ -78,12 +79,10 @@ const FormComponent = () => {
                     </Stepper>
                 </Paper>
                 <Box>
-                    {currentStep !== 3 ? <form className='form' onSubmit={handleSubmit}>
-                        {currentStep === 0 ? <Step1 {...tools} /> : null}
-                        {currentStep === 1 ? <Step2 {...tools}/> : null}
-                        {currentStep === 2 ? <Step3 {...tools}/> : null}
-                    </form>
-                        : <FinalOutput />}
+                    {currentStep===0?<Step1 next={next} state={state} setState={setState}/>:null}
+                    {currentStep===1?<Step2 next={next} prev={prev} state={state} setState={setState}/>:null}
+                    {currentStep===2?<Step3 next={next} prev={prev} state={state} setState={setState}/>:null}
+                    {currentStep===3?<FinalOutput />:null}
                 </Box>
             </Grid>
         </StyledForm>
